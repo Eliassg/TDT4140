@@ -1,0 +1,34 @@
+{% extends "base.html" %} {% block content %} {% load static%}
+
+<link rel="stylesheet" href="{%static 'css/emner.css' %}" />
+<link rel="stylesheet" href="{%static 'css/emnemeny.css' %}" />
+
+<div class="rundtalt">
+  <div class="wrapper">
+    <nav id="sidebar">
+      <div class="sidebar-header">
+        <h3>Emner</h3>
+      </div>
+      <div class="emneliste">
+        {% for emne in emneListe %}
+        <a href="{% url 'enkeltemne' emne.id %}">{{emne.emnenavn}} </a>
+        {% endfor %}
+      </div>
+    </nav>
+  </div>
+  <wrapper id="postWrapper">
+    <div class="boks">
+      <h1> Søkeresultat for: {{ search_word }}</h1>
+    </div>
+    {% if object_list %}
+      {% for post in object_list %}
+        <div id="postBox" style="height: 80px">
+          <p id="postUsername" style="color:white; font-weight: bold; margin-bottom: 0;">{{ post.author }}</p>
+          <a href="{{ post.get_url }}" style="font-size: 25px;">{{ post.title }}</a>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </wrapper>
+</div>
+
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Post</title>
+    <link rel="stylesheet" href="{%static 'css/userpost.css' %}">
+    <link href= '{%static "vendor/bootstrap/css/bootstrap.min.css" %}' rel="stylesheet">
+</head>
+<body>
+    {% if post %}
+        <wrapper id="postWrapper" style="position: relative">
+            <H1 id="postTitle">{{ post.title }}</H1>
+            <p> <a type="button" class="btn btn-secondary btn-sm" href="{{ post.get_like_url }}"> Liker: {{ post.likes.count }} <a/> </p>
+            <p id="postDesc">{{ post.text }}</p>
+            {% if post.author == user %}
+                <form method="post" id="deleteform">
+                {% csrf_token %}
+                    <label for="deleteFormValue">
+                        <input hidden name="deleteValue" id="deleteFormValue" value="deleteYes">
+                    </label>
+                    <input type="submit" class="btn btn-danger" value="Slett post" style="bottom: 20px; left: 20px; position: absolute;">
+                </form>
+            {% endif %}
+            {% if request.user.is_authenticated %}
+                <form method="post" id="reportpostform">
+                {% csrf_token %}
+                    <label for="reportFormValue">
+                        <input hidden name="reportPostValue" id="reportFormValue" value="reportPostYes">
+                    </label>
+                    <input type="submit" class="btn btn-danger" value="Raporter post" style="bottom: 20px; right: 20px; position: absolute;">
+                </form>
+            {% endif %}
+        </wrapper>
+    {% else %}
+        <wrapper id="postWrapper">
+            <H1 id="postTitle">Post could not be loaded</H1>
+        </wrapper>
+    {% endif %}
+    {% if request.user.is_authenticated %}
+        <form action="" method="post">
+            {% csrf_token %}
+            <label for="commentBox" style="width: 100%;">
+                <div id="commentBox">
+                    <textarea type="text" class="form-control" name="commentText" required></textarea>
+                    <input type="submit" class="btn btn-danger" id="commentSubmit" name="submitComment" value="Legg til kommentar">
+                </div>
+            </label>
+            <label for="deleteFormValue">
+                <input hidden name="commentPostValue" id="deleteFormValue" value="commentYes">
+            </label>
+            <br>
+        </form>
+    {% endif %}
+    {% if comments %}
+            {% for comment in comments %}
+                <div id="commentBox" style="position: relative;">
+                    <p id="commentUsername">{{ comment.author }}</p>
+                    <p id="commentText">{{ comment.text }}</p>
+                {% if request.user.is_authenticated %}
+                <form method="post" id="reportcommentform" style="bottom: 20px; right: 20px; position: absolute;">
+                {% csrf_token %}
+                    <label for="reportFormValue">
+                        <input hidden name="reportCommentValue" id="reportFormValue" value="reportCommentYes">
+                    </label>
+                    <label for="reportFormValue">
+                        <input hidden name="commentID" id="commentIDInput" value="{{ comment.id }}">
+                    </label>
+                    <input type="submit" class="btn btn-danger" value="Raporter kommentar" style="position: absolute; right: 0px;">
+                </form>
+            {% endif %}
+                </div>
+            {% endfor %}
+    {% else %}
+        <div id="commentBox">
+            <p id="commentText">No comments</p>
+        </div>
+    {% endif %}
+
+</body>
+</html>
+
+{% endblock %}
