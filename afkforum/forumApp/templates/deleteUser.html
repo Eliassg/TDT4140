@@ -1,39 +1,68 @@
-{% extends "base.html" %}
-{% block content %}
-{% load static%}
+{% extends "base.html" %} {% block content %} {% load static%}
 
-<link rel="stylesheet" href="{%static 'css/deleteUser.css' %}">
+<link rel="stylesheet" href="{%static 'css/deleteUser.css' %}" />
 
-<div id="dritt"> <button2 class="btn btn-danger " data-toggle="modal" data-target="#my-modal">Slett bruker</button2>
-    <div id="my-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content border-0">
-                <div class="modal-body p-0">
-                    <div class="card border-0 p-sm-3 p-2 justify-content-center">
-                        <div class="card-header pb-0 bg-white border-0 ">
-                            <div class="row">
-                                <div class="col ml-auto"><button2 type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button2></div>
-                            </div>
-                            <p class="font-weight-bold mb-2"> Er du sikker på at du ønsker å slette brukeren {{ user.username }}? </p>
-                            <p class="text-muted "> Dette vil slette brukeren for godt.</p>
-                        </div>
-                        <div class="card-body px-sm-4 mb-2 pt-1 pb-0">
-                            <div class="row justify-content-end no-gutters">
-                                <div class="col-auto"><button2 type="button" onclick="location.href='{% url 'index'%}'" class="btn btn-light text-muted" data-dismiss="modal">Avbryt</button2></div>
-                                <div class="col-auto"><button2 type="button" onclick="location.href='{% url 'delete_user' username=user.username %}'" class="btn btn-danger px-4" data-dismiss="modal">Slett</button2></div>
-                            </div>
-                        </div>
-                    </div>
+<div id="dritt">
+  <button2 class="btn btn-danger " data-toggle="modal" data-target="#my-modal"
+    >Slett bruker</button2
+  >
+  <div
+    id="my-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content border-0">
+        <div class="modal-body p-0">
+          <div class="card border-0 p-sm-3 p-2 justify-content-center">
+            <div class="card-header pb-0 bg-white border-0 ">
+              <div class="row">
+                <div class="col ml-auto">
+                  <button2
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button2>
                 </div>
+              </div>
+              <p class="font-weight-bold mb-2">
+                Er du sikker på at du ønsker å slette brukeren
+                {{user.username}}?
+              </p>
+              <p class="text-muted ">Dette vil slette brukeren for godt.</p>
             </div>
+            <div class="card-body px-sm-4 mb-2 pt-1 pb-0">
+              <div class="row justify-content-end no-gutters">
+                <div class="col-auto">
+                  <button2
+                    type="button"
+                    onclick="location.href='{% url 'view_profile' user.username %}'"
+                    class="btn btn-light text-muted"
+                    data-dismiss="modal"
+                    >Avbryt</button2
+                  >
+                </div>
+                <div class="col-auto">
+                  <button2
+                    type="button"
+                    onclick="location.href='{% url 'delete_user' username=user.username %}'"
+                    class="btn btn-danger px-4"
+                    data-dismiss="modal"
+                    >Slett</button2
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 
-
-
-
-
-
 {% endblock %}
-

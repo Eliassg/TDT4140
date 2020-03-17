@@ -22,15 +22,15 @@
   flex-direction: row;
   height: 100%;
 }
-.wrapper{
+.wrapper {
   height: 100%;
 }
-.postwrapper{
+.postwrapper {
   display: flex;
   flex-direction: column;
 }
-#postBox{
-  margin-left:5px;
+#postBox {
+  margin-left: 5px;
   margin-top: 10px;
   border: solid #212529 3px;
   border-radius: 5px;
@@ -43,6 +43,6 @@
   color: white;
   white-space: nowrap;
 }
-a{
-  color:white;
+a {
+  color: white;
 }

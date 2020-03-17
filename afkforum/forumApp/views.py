@@ -6,14 +6,26 @@ from .models import Post, get_post_by_id, get_comments_by_post, Emne, get_posts_
 
 # Imports for register of user (Baard)
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, authenticate, update_session_auth_hash
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.shortcuts import render, redirect
-from .forms import SignUpForm
+from .forms import (
+    SignUpForm, 
+    EditProfileForm,
+    EditUserProfileForm
+ ) #UserUpdateForm, ProfileUpdateForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.views.generic import RedirectView
+
+# laster følgende inn for bildefilopplasting
+from django.core.files.storage import FileSystemStorage
+
+# imports for userprofile
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserChangeForm
+
 
 # Methods for registry of user with "SignUpForm".
 def index(request):
@@ -93,7 +105,10 @@ def userpost(request, post_id):
             return redirect(request.path_info)
     return render(request, 'postView.html', {'post': post, 'comments': comments, 'user':  request.user})
 
+#klasse for å aktivere likes
 class PostLikeToggle(RedirectView):
+    #funksjonen sørger for redirect tilbake til posten. For at siden ikke skal laste inn på nytt
+    #   må vi bruke vi bruke JS ens. 
     def get_redirect_url(self, *args, **kwargs):
         post_id = self.kwargs.get("post_id")
         print(post_id)
@@ -106,9 +121,6 @@ class PostLikeToggle(RedirectView):
             else:
                 obj.likes.add(user)
         return url_
-
-
-
 
 
 def postCreation(request):
@@ -125,12 +137,11 @@ def postCreation(request):
     return render(request, 'postCreation.html', {'emner': emner})
 
 
-def profilePage(request):
-    return render(request, 'profil.html')
+
 
 # Funksjon for at brukere skal kunne slette sin egen bruker.
 def delete_user(request, username):
-    context = {}
+    context = {'user': request.user}
     try:
         u = User.objects.get(username=username)
         u.delete()
@@ -165,9 +176,45 @@ def show_search_result(request):
     return render(request,'searchresult.html', context=context)
 
 
+# for at brukere skal kunne se sin egen og andres profil
+def view_profile(request, username):
+    user = User.objects.get(username=username)
+    context = {'user': user, 'profile_owner': user==request.user}
+    return render(request, 'account/profile.html', context) #args)
 
+#funkjson for at brukere skal kunne redigere profilsiden sin
+def edit_profile(request):
+    if request.method == 'POST':
+        user_form = EditProfileForm(request.POST, instance=request.user)
+        userprofile_form = EditUserProfileForm(request.POST, request.FILES, instance=request.user.userprofile)
 
+        if user_form.is_valid() and userprofile_form.is_valid():
+            user_form.save() # lagrer til brukeren
+            userprofile_form.save() # lagrer til brukeren
+            return redirect('view_profile', username=request.user.username) # sender tilbake til prfoilsiden når endringen er ferdig
 
+    else:
+        user_form = EditProfileForm(instance=request.user)
+        userprofile_form = EditUserProfileForm(instance=request.user)
 
+        args = {'user_form': user_form, 'userprofile_form': userprofile_form, 'user':request.user}
+        return render(request, 'account/edit_profile.html', args)
 
+# funkjson for at brukeren skal kunne endre passord
+def change_password(request):
+    # når brukeren vil lagre endringene den har fylt inn (altså oppdatere passord)
+    if request.method == 'POST':
+        form = PasswordChangeForm(data=request.POST, user=request.user)
 
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            return redirect('view_profile', username=request.user.username) # sender tilbake til prfoilsiden når endringen er ferdig
+        else:
+            return redirect('/forumApp/profile/change-password') # hvis det ikke er valid blir de sendt tilbake til samme side
+    
+    # når brukeren bare går inn på siden
+    else:
+        form = PasswordChangeForm(user=request.user)
+        args = {'form': form, 'user': request.user}
+        return render(request, 'account/change_password.html', args)

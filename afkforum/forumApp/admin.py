@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Comment, Emne, ReportPost, ReportComment
+from .models import Post, Comment, Emne, ReportPost, ReportComment, UserProfile
 
 from django.urls import reverse
 from django.utils.safestring import mark_safe
@@ -37,3 +37,5 @@ admin.site.register(Comment)
 admin.site.register(Emne)
 admin.site.register(ReportPost, ReportPostAdmin)
 admin.site.register(ReportComment, ReportCommentAdmin)
+admin.site.register(UserProfile)
+

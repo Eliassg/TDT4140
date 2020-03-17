@@ -3,7 +3,10 @@ from django.conf import settings
 from django.db.models import F
 from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
 import uuid
+import os
 
 
 # Create your models here.
@@ -42,7 +45,6 @@ class Post(Submission):
     num_comments = models.IntegerField(default=0)
     likes = models.ManyToManyField(settings.AUTH_USER_MODEL, blank = True, related_name="post_likes")
 
-
     # funksjon for å legge til kommentar på post
     def add_comment(self, text, author):
         comment = Comment()
@@ -56,7 +58,7 @@ class Post(Submission):
 
         return comment
 
-    # funksjon for å få url
+    # funksjoner for å få url
     def get_url(self):
         return "/forumApp/userpost/" +  str(self.id)
 
@@ -147,4 +149,29 @@ def get_comment_by_id(comment_id):
     return Comment.objects \
         .select_related("author").get(pk=comment_id)
 
+# hvordan man kan legge inn bild epå profilen 
+# tror ikke den brukes, men får feilmelding når jeg prøver å fjerne den
+# tror det er pga noe i databasen brukte den før(?)
+def get_image_path(instance, filename):
+    return os.path.join('photos', str(instance.id), filename)
 
+
+# Det følgende er det som faktisk brukes til profilen
+class UserProfile(models.Model):
+    user = models.OneToOneField(User,on_delete=models.CASCADE) # ontoonefield handler om primary key
+    description = models.CharField(max_length=140, default='', blank=True) # deskripition er noe brukeren skal kunne lagre om seg selv
+    image = models.ImageField(upload_to='profile_image', default='/profile_image/horse.jpg')
+
+    # funksjon for at brukerens UserProfile skal vises med brukernavn på admin-siden
+    def __str__(self):
+        return self.user.username
+
+
+# Må ha denne for at det skal kobles en UserPRofile til hver bruker som opprettes
+def create_profile(sender, **kwargs):
+    if kwargs['created']:
+        user_profile = UserProfile.objects.create(user=kwargs['instance'])
+
+
+post_save.connect(create_profile, sender=User)
+    

@@ -21,10 +21,32 @@
     </div>
     {% if posts %}
       {% for post in posts %}
-        <div id="postBox" style="height: 80px">
-          <p id="postUsername" style="color:white; font-weight: bold; margin-bottom: 0;">{{ post.author }}</p>
-          <a href="{{ post.get_url }}" style="font-size: 25px;">{{ post.title }}</a>
+      <div class="container">
+        <div class="card bg-dark text-white my-3">
+          <div class="card-body">
+            <a
+            class=" text-muted""
+            href="#"
+            onclick="location.href='{% url 'view_profile' post.author.username %}'"
+            >
+            <img
+            class=" rounded-circle mr-2"
+            src="{{ post.author.userprofile.image.url }}"
+            height="30"
+            width="30"
+            href="#"
+            onclick="location.href='{% url 'view_profile' post.author.username %}'"
+          />{{ post.author}}
+            </a>
+         
+        <hr class="m-1" />
+          
+          </p>
+          <a href="{{ post.get_url }}" style="font-size: 25px;"
+            >{{ post.title }}</a
+          ></div>
         </div>
+      </div>
       {% endfor %}
     {% endif %}
   </wrapper>

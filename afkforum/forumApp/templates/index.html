@@ -3,7 +3,6 @@
 <link rel="stylesheet" href="{%static 'css/emnemeny.css' %}" />
 <link rel="stylesheet" href="{%static 'css/emner.css' %}" />
 
-
 <div class="rundtalt">
   <div class="wrapper">
     <nav id="sidebar">
@@ -18,17 +17,40 @@
     </nav>
   </div>
   <wrapper id="postWrapper">
-      <div class="boks">
-          <h1>Dette er de 5 nyeste postene</h1>
+    <div class="boks">
+      <h1>Dette er de 5 nyeste postene</h1>
+    </div>
+
+    {% if posts %} {% for post in posts %}
+    <div class="container">
+      <div class="card bg-dark text-white my-3">
+        <div class="card-body">
+          <!-- <div id="postBox" style="height: 80px;"> -->
+            <a
+            class=" text-muted""
+            href="#"
+            onclick="location.href='{% url 'view_profile' post.author.username %}'"
+            >
+            <img
+            class=" rounded-circle mr-2"
+            src="{{ post.author.userprofile.image.url }}"
+            height="30"
+            width="30"
+            href="#"
+            onclick="location.href='{% url 'view_profile' post.author.username %}'"
+          />{{ post.author}}
+            </a>
+         
+        <hr class="m-1" />
+          
+          </p>
+          <a href="{{ post.get_url }}" style="font-size: 25px;"
+            >{{ post.title }}</a
+          >
+        </div>
       </div>
-      {% if posts %}
-          {% for post in posts %}
-              <div id="postBox" style="height: 80px;">
-                  <p id="postUsername" style="color:white; font-weight: bold; margin-bottom: 0px;">{{ post.author }}</p>
-                  <a href="{{ post.get_url }}" style="font-size: 25px;">{{ post.title }}</a>
-              </div>
-          {% endfor %}
-      {% endif %}
+    </div>
+    {% endfor %} {% endif %}
   </wrapper>
 </div>
 {% endblock %}

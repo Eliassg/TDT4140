@@ -1,0 +1,59 @@
+{% extends 'base.html' %} {% block content %} {% load static%}
+
+
+
+<link rel="stylesheet" href="{%static 'css/login.css' %}" />
+<link rel="stylesheet" href="{%static 'css/account/profile.css' %}" />
+
+<div class="container">
+  <div class="card bg-dark text-white my-3">
+
+    <div class="card-body">
+      <button
+        class="float-right btn btn-danger"
+        onclick="location.href='{% url 'view_profile' user.username %}'"
+      >
+        Back to profile (don't save)
+      </button>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %} 
+
+        {{ user_form.non_field_errors }}
+
+        {{ user_form.source.errors}}
+        {{user_form.source}}
+    
+        <div class="profile-big-box">
+          <img
+            class="rounded-circle square-img"
+            src="{{ user.userprofile.image.url }}"
+          />
+          <h1>{{user}}</h1>
+          <hr />
+          <div class="textbox">
+            <h4>{{ user_form.email.label_tag }}</h4>
+              <p>
+                {{ user_form.email.errors }}
+                {{ user_form.email }}
+              </p>
+              <h4>{{ userprofile_form.description.label_tag }}</h4>
+              <p>
+                {{ userprofile_form.description.errors }}
+                {{ userprofile_form.description }}
+              </p>
+              <h4>{{ userprofile_form.image.label_tag }}</h4>
+              <p>
+                {{ userprofile_form.image.errors }}
+                {{ userprofile_form.image }}
+              </p>
+              <hr>
+            </div>
+          <button class="btn btn-success" type="submit">Submit</button>
+        </form>
+    </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

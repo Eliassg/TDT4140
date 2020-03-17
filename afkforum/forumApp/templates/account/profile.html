@@ -1,0 +1,57 @@
+{% extends 'base.html' %} {% block content %} {% load static%}
+
+<link rel="stylesheet" href="{%static 'css/login.css' %}" />
+<link rel="stylesheet" href="{%static 'css/account/profile.css' %}" />
+
+<div class="container">
+  <div class="card bg-dark text-white my-3">
+    <div class="card-body">
+      {% if profile_owner %}
+
+      <button
+        class="float-right btn btn-secondary ml-2"
+        onclick="location.href='{% url 'change_password' %}'"
+      >
+        Change password
+      </button>
+      <button
+        class="float-right btn btn-secondary"
+        onclick="location.href='{% url 'edit_profile' %}'"
+      >
+        Edit profile
+      </button>
+      {% endif %}
+
+      <div class="profile-big-box">
+        {% if user.userprofile.image %}
+        <img
+          class="rounded-circle square-img"
+          src="{{ user.userprofile.image.url }}"
+        />
+        {% endif %}
+        <h1>{{user}}</h1>
+        <hr />
+        <div class="textbox">
+          <h4>Email</h4>
+          <p>{{ user.email }}</p>
+          <h4>Description</h4>
+          <p>
+            {{ user.userprofile.description }}
+          </p>
+        </div>
+        <hr />
+      </div>
+      {% if profile_owner %}
+
+      <button
+        class="float-right btn btn-danger"
+        onclick="location.href='{% url 'deleteUser' %}'"
+      >
+        Delete user
+      </button>
+      {% endif %} {% block delete-btn %} {% endblock %}
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

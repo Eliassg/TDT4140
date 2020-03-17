@@ -1,39 +1,54 @@
 {%extends 'base.html' %} {% block content %} {% load static%}
 <head>
-    <meta charset="UTF-8">
-    <title>User Post Submission</title>
-    <link rel="stylesheet" href="{%static 'css/userpost.css' %}">
-    <link href= '{%static "vendor/bootstrap/css/bootstrap.min.css" %}' rel="stylesheet">
+  <meta charset="UTF-8" />
+  <title>User Post Submission</title>
+  <link rel="stylesheet" href="{%static 'css/userpost.css' %}" />
+  <link
+    href='{%static "vendor/bootstrap/css/bootstrap.min.css" %}'
+    rel="stylesheet"
+  />
 </head>
-    <wrapper id="postInpWrapper">
-        <form action="" method="post">
-            {% csrf_token %}
-            <h4 for="titleInput" class="text-danger">
-                Tittel
-                <br>
-                <input type="text" class="titleInput" name="postTitle" required>
-            </h4>
-            <br>
-            <h5 for="emnenavn" class="text-danger">
-                Emne
-                <select name="emnenavn" class="custom-select" required>
-                    {% if emner %}
-                    {% for emne in emner %}
-                    <option value="{{ emne.emnenavn }}">{{ emne.emnenavn }}</option>
-                    {% endfor %}
-                    {% endif %}
-                </select>
-            </h5>
-            <br>
-            <br>
-            <h5 for="descInput" class="text-danger" style="width: 100%;">
-                Innhold
-                <br>
-                
-                <textarea rows="5" class="form-control" name="postDesc" required ></textarea>
-            </h5>
-            <br>
-            <input type="submit" class="btn btn-danger" name="submitPost" value="Legg ut post">
-        </form>
-    </wrapper>
+<div class="container">
+  <div class="card bg-dark text-white my-3">
+    <div class="card-body">
+      <form action="" method="post">
+        {% csrf_token %}
+        <h4 for="titleInput" class="text-danger">
+          Tittel
+          <br />
+          <input type="text" class="titleInput" name="postTitle" required />
+        </h4>
+        <br />
+        <h5 for="emnenavn" class="text-danger">
+          Emne
+          <select name="emnenavn" class="custom-select" required>
+            {% if emner %} {% for emne in emner %}
+            <option value="{{ emne.emnenavn }}">{{ emne.emnenavn }}</option>
+            {% endfor %} {% endif %}
+          </select>
+        </h5>
+        <br />
+        <br />
+        <h5 for="descInput" class="text-danger" style="width: 100%;">
+          Innhold
+          <br />
+
+          <textarea
+            rows="5"
+            class="form-control"
+            name="postDesc"
+            required
+          ></textarea>
+        </h5>
+        <br />
+        <input
+          type="submit"
+          class="btn btn-danger"
+          name="submitPost"
+          value="Legg ut post"
+        />
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock %}
