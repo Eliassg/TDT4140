@@ -1,5 +1,5 @@
 # TDT4140 - Programvareutvlikling gruppe 54 2020  
-<img src="https://gitlab.stud.idi.ntnu.no/tdt4140-2020/54/-/raw/master/afkforum/forumApp/static/images/homelogo.png" width="150"> 
+<img src="afkforum/forumApp/static/images/homelogo.png" width="150"> 
 
 
 
@@ -134,5 +134,5 @@ Bidrag gjøres gjennom en ["fork-and-pull" Git workflow](https://reflectoring.io
 5. Publiser en **merge request** så bidraget kan bli gjennomgått  
   
 # Lisens  
-[MIT Licence](https://gitlab.stud.idi.ntnu.no/tdt4140-2020/54/-/blob/master/LICENSE)  
+[MIT Licence](https://github.com/Eliassg/TDT4140/blob/master/LICENSE)  
 
