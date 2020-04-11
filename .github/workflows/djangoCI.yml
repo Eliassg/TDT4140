@@ -27,4 +27,4 @@ jobs:
         pip install -r requirements.txt
     - name: Run Tests
       run: |
-        python afkforum/manage.py test
+        python afkforum/manage.py test forumApp
