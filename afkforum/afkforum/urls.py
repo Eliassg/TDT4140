@@ -27,6 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 
+
 # kan hende dette skal i urls.py som ligger inni forumApp-mappen
 # er lagt inn i for å kunne laste opp bildefiler
 # Det den gjør: hvis settings er i DEBUG-modus (noe som den er når vi utvikler) legger

@@ -11,136 +11,133 @@
       <h1 class="pl-2">{{ post.title }}</h1>
       <hr class="m-1" />
       <div class="d-flex flex-row align-items-center px-2">
-        
         <a
-          class=" text-muted"
-          href="#"
-          onclick="location.href='{% url 'view_profile' post.author.username %}'"
-          >
+            class=" text-muted"
+            href="#"
+            onclick="location.href='{% url 'view_profile' post.author.username %}'"
+        >
           <img
-          class=" rounded-circle mr-2"
-          src="{{ post.author.userprofile.image.url }}"
-          height="30"
-          width="30"
-          href="#"
-          onclick="location.href='{% url 'view_profile' post.author.username %}'"
-        />{{ post.author}}
-          </a>
-       
+              alt="profile pic"
+              class=" rounded-circle mr-2"
+              src="{{ post.author.userprofile.image.url }}"
+              height="30"
+              width="30"
+              onclick="location.href='{% url 'view_profile' post.author.username %}'"
+          />
+          {{ post.author}} - 
+          {{ post.submission_time}}
+        </a>
       </div>
       <hr class="m-1" />
-      <p> <a type="button" class="btn btn-secondary btn-sm" href="{{ post.get_like_url }}"> Liker: {{ post.likes.count }} </a> </p>
       <div>
         <p class="p-2">{{ post.text }}</p>
+        <a type="button" class="btn btn-secondary btn-sm" href="{{ post.get_like_url }}"> Liker: {{ post.likes.count }} </a>
       </div>
       {% if post.author == user %}
-      <form method="post" id="deleteform">
-        {% csrf_token %}
-        <label for="deleteFormValue">
+        <form method="post" id="deleteform">
+          {% csrf_token %}
+          <label for="deleteFormValue">
+            <input
+                hidden
+                name="deleteValue"
+                id="deleteFormValue"
+                value="deleteYes"
+            />
+          </label>
           <input
-            hidden
-            name="deleteValue"
-            id="deleteFormValue"
-            value="deleteYes"
+              type="submit"
+              class="btn btn-danger"
+              value="Slett tråd"
+              style="bottom: 20px; left: 20px; position: absolute;"
           />
-        </label>
-        <input
-          type="submit"
-          class="btn btn-danger"
-          value="Slett post"
-          style="bottom: 20px; left: 20px; position: absolute;"
-        />
-      </form>
+        </form>
       {% endif %}
       {% if request.user.is_authenticated %}
-          <form method="post" id="reportpostform">
-              {% csrf_token %}
-              <label for="reportFormValue">
-                  <input hidden name="reportPostValue" id="reportFormValue" value="reportPostYes">
-              </label>
-              <input type="submit" class="btn btn-danger" value="Raporter post" style="bottom: 20px; right: 20px; position: absolute;">
-          </form>
+        <form method="post" id="reportpostform">
+          {% csrf_token %}
+          <label for="reportFormValue">
+            <input hidden name="reportPostValue" id="reportFormValue" value="reportPostYes">
+          </label>
+          <input type="submit" class="btn btn-danger btn-sm" value="Rapporter" style="bottom: 20px; right: 20px; position: absolute;">
+        </form>
       {% endif %}
     </div>
   </div>
 {% else %}
-<div class="container">
-  <div class="card bg-dark text-white my-3">
-    <div class="card-body">
-      <h1 class="pl-2">Posten er borte:(</h1>
+  <div class="container">
+    <div class="card bg-dark text-white my-3">
+      <div class="card-body">
+        <h1 class="pl-2">Posten er borte:(</h1>
+      </div>
     </div>
   </div>
-</div>
 {% endif %}
 {% if request.user.is_authenticated %}
   <div class="card bg-dark text-white my-3">
     <div class="card-body">
       <form action="" method="post">
-            {% csrf_token %}
-            <label for="commentBox" style="width: 100%;">
-                <div id="commentBox">
-                    <textarea type="text" class="form-control" name="commentText" required></textarea>
-                    <input type="submit" class="btn btn-danger" id="commentSubmit" name="submitComment" value="Legg til kommentar">
-                </div>
-            </label>
-            <label for="deleteFormValue">
-                <input hidden name="commentPostValue" id="deleteFormValue" value="commentYes">
-            </label>
-            <br>
-        </form>
+        {% csrf_token %}
+        <label for="commentBox" style="width: 100%;">
+          <span id="commentBox">
+            <textarea type="text" class="form-control" name="commentText" required></textarea>
+          </span>
+        </label>
+        <label for="deleteFormValue">
+          <input hidden name="commentPostValue" id="deleteFormValue" value="commentYes">
+        </label>
+        <br>
+        <input type="submit" class="btn btn-danger" id="commentSubmit" name="submitComment" value="Legg til kommentar">
+      </form>
     </div>
   </div>
-  
-  {% endif %}
-  <div class="mb-5">
-    {% if comments %} {% for comment in comments %}
-
-
-  <div class="card bg-dark text-white ">
-    <div class="card-body">
-      <div class="d-flex flex-row align-items-center px-2">
-        
-        <a
-          class=" text-muted"
-          href="#"
-          onclick="location.href='{% url 'view_profile' comment.author.username %}'"
-          >
-          <img
-          class=" rounded-circle mr-2"
-          src="{{ comment.author.userprofile.image.url }}"
-          height="30"
-          width="30"
-          href="#"
-          onclick="location.href='{% url 'view_profile' post.author.username %}'"
-        />{{ comment.author}}
-          </a>
-       
+{% endif %}
+<div class="mb-5">
+  {% if comments %}
+    {% for comment in comments %}
+      <div class="card bg-dark text-white ">
+        <div class="card-body">
+          <div class="d-flex flex-row align-items-center px-2">
+            <a
+                class=" text-muted"
+                onclick="location.href='{% url 'view_profile' comment.author.username %}'"
+            >
+              <img
+                  alt="profile pic"
+                  class=" rounded-circle mr-2"
+                  src="{{ comment.author.userprofile.image.url }}"
+                  height="30"
+                  width="30"
+                  onclick="location.href='{% url 'view_profile' post.author.username %}'"
+              />
+              {{ comment.author}}-
+              {{ comment.submission_time}}
+            </a>
+          </div>
+          <hr class="m-1" />
+          <div>
+            <p id="commentText" class="p-2">{{ comment.text }}</p>
+          </div>
+          {% if request.user.is_authenticated %}
+            <form method="post" id="reportcommentform" style="bottom: 20px; right: 20px; position: absolute;">
+              {% csrf_token %}
+              <label for="reportFormValue">
+                <input hidden name="reportCommentValue" id="reportFormValue" value="reportCommentYes">
+              </label>
+              <label for="reportFormValue">
+                <input hidden name="commentID" id="commentIDInput" value="{{ comment.id }}">
+              </label>
+              <input type="submit" class="btn btn-danger btn-sm" value="Rapporter" style="position: absolute; right: 0px;">
+            </form>
+          {% endif %}
+        </div>
       </div>
-      <hr class="m-1" />
-      <div>
-        <p id="commentText" class="p-2">{{ comment.text }}</p>
-      </div>
-      {% if request.user.is_authenticated %}
-                <form method="post" id="reportcommentform" style="bottom: 20px; right: 20px; position: absolute;">
-                {% csrf_token %}
-                    <label for="reportFormValue">
-                        <input hidden name="reportCommentValue" id="reportFormValue" value="reportCommentYes">
-                    </label>
-                    <label for="reportFormValue">
-                        <input hidden name="commentID" id="commentIDInput" value="{{ comment.id }}">
-                    </label>
-                    <input type="submit" class="btn btn-danger" value="Raporter kommentar" style="position: absolute; right: 0px;">
-                </form>
-            {% endif %}
-    </div>
-  </div>
-  {% endfor %} 
+    {% endfor %}
   {% else %}
-  <div class="card bg-dark text-white ">
-    <div class="card-body">
-      <p id="commentText" class="p-2">No comments</p>
+    <div class="card bg-dark text-white ">
+      <div class="card-body">
+        <p id="commentText" class="p-2">Ingen kommentarer</p>
+      </div>
     </div>
-  </div>
   {% endif %}
 </div>
 </div>

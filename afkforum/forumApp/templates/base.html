@@ -4,24 +4,21 @@
 {% load static %}
 
 <head>
-
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
 
   <title>AFK - Forum</title>
-
+  <link rel="shortcut icon" type="image/png" href='{%static "images/homelogo.png" %}'>
   <!-- Bootstrap core CSS -->
   <link href= '{%static "vendor/bootstrap/css/bootstrap.min.css" %}' rel="stylesheet">
   <link href= '{%static "css/footer.css" %}' rel="stylesheet">
   <link rel="stylesheet" href="{%static 'css/searchbar.css' %}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
 </head>
 
 <body>
-
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
     <div class="container">
@@ -33,41 +30,42 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
+            <li class="nav-item">
+            <a class="nav-link" href='{% url 'index' %}'>Hjem</a>
+            </li>
+            {% if request.user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href='{% url 'logout' %}'>Logg ut</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href='{% url 'postCreation' %}'>Lag ny tråd</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href='{% url 'view_profile' request.user.username %}'>Profil</a>
+            </li>
+            {% else %}
             <li>
-              <a class="nav-link" href="#" onclick="location.href='{% url 'index' %}'">Hjem</a>
+              <a class="nav-link" href='{% url 'login' %}'> Logg inn/Registrer </a>
             </li>
-          </li>
-          {% if request.user.is_authenticated %}
-            
-          <li class="nav-item">
-            <li>
-              <a class="nav-link" href="#" onclick="location.href='{% url 'logout' %}'">Logg ut</a>
+            {% endif %}
+            <li class="d-flex justify-content-center h-100">
+              <form method="GET" action='{% url 'results' %}'>
+                <div class="search">
+                  <label>
+                    <input class="search_input" type="text" name="q" placeholder="Søk her...">
+                    <button type="Submit" class="search_icon"><i class="fa fa-search"></i></button>
+                  </label>
+                </div>
+              </form>
             </li>
-            <a class="nav-link" href="#" onclick="location.href='{% url 'postCreation' %}'">Lag ny post</a>
-            <a class="nav-link" href="#" onclick="location.href='{% url 'view_profile' request.user.username %}'">Profil</a> -->
-
-            </li>
-              
-          {% else %}
-            </li>
-            <a class="nav-link" href="#" onclick="location.href='{% url 'login' %}'"> Logg inn/Registrer </a>
-          {% endif %}
-              <div class="d-flex justify-content-center h-100">
-                  <form method="GET" action='{% url 'results' %}'>
-                     <div class="search"> <input class="search_input" type="text" name="q" placeholder="Søk her..."> <button type="Submit" class="search_icon"><i class="fa fa-search"></i></a> </div>
-                  </form>
-              </a>
-          </div>
-          </div>
-          </li>
         </ul>
-        </div>
       </div>
-    </nav>
+    </div>
+  </nav>
 
     <!-- Page Content -->
-    {% block content %} {% endblock %}
+  <div class="content">
+  {% block content %} {% endblock %}
 
     <!-- START lagt inn for sidemeny -->
     <!-- jQuery CDN - Slim version (=without AJAX) -->
@@ -96,20 +94,13 @@
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-  </body>
 
-  <body class="d-flex flex-column">
-    <div id="page-content">
-      <div class="container text-center">
-        <div class="row justify-content-center">
-          <div class="col-md-7"></div>
-        </div>
-      </div>
+
+  </div>
+
+  <footer id="sticky-footer" class="py-4 bg-dark text-white-50">
+    <div class="container text-center">
+      <small>Copyright &copy; AFK Forum</small>
     </div>
-    <footer id="sticky-footer" class="py-4 bg-dark text-white-50">
-      <div class="container text-center">
-        <small>Copyright &copy; AFK Forum</small>
-      </div>
-    </footer>
-  </body>
-</html>
+  </footer>
+</body>

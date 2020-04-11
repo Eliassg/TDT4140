@@ -2,8 +2,13 @@
   box-sizing: border-box;
   background: #212529;
   height: 100%;
-  max-width: 250px;
-  min-width: 250px !important;
+  max-width: relative;
+  min-width: relative !important;
+}
+
+.wrapper{
+  margin-top: 35px;
+  border-radius: 5px;
 }
 
 .sidebar-header h3 {

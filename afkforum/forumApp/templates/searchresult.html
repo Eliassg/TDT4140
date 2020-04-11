@@ -1,34 +1,84 @@
-{% extends "base.html" %} {% block content %} {% load static%}
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<link rel="stylesheet" href="{%static 'css/emner.css' %}" />
+{% extends "base.html" %}
+
+
+{% block content %}
+
+{% load static%}
 <link rel="stylesheet" href="{%static 'css/emnemeny.css' %}" />
+<link rel="stylesheet" href="{%static 'css/emner.css' %}" />
 
-<div class="rundtalt">
-  <div class="wrapper">
-    <nav id="sidebar">
-      <div class="sidebar-header">
-        <h3>Emner</h3>
+<body class="w3-light-grey w3-content" style="max-width:100%">
+
+
+<!-- Sidebar/menu -->
+
+<!-- Overlay effect when opening sidebar on small screens -->
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main">
+  <!-- Header -->
+  <!-- First Photo Grid-->
+  <div class="w3-row-padding">
+    <div class="w3-quarter w3-container w3-margin-bottom">
+      <div class="wrapper">
+        <nav id="sidebar">
+          <div class="sidebar-header">
+            <h3>Emner</h3>
+          </div>
+          <div class="emneliste">
+            {% for emne in emneListe %}
+              <a href="{% url 'enkeltemne' emne.id %}">{{emne.emnenavn}} </a>
+            {% endfor %}
+          </div>
+        </nav>
       </div>
-      <div class="emneliste">
-        {% for emne in emneListe %}
-        <a href="{% url 'enkeltemne' emne.id %}">{{emne.emnenavn}} </a>
-        {% endfor %}
-      </div>
-    </nav>
-  </div>
-  <wrapper id="postWrapper">
+    </div>
+    <div class="w3-third w3-container w3-margin-bottom">
+      <div id="postWrapper">
     <div class="boks">
       <h1> Søkeresultat for: {{ search_word }}</h1>
     </div>
     {% if object_list %}
       {% for post in object_list %}
-        <div id="postBox" style="height: 80px">
-          <p id="postUsername" style="color:white; font-weight: bold; margin-bottom: 0;">{{ post.author }}</p>
-          <a href="{{ post.get_url }}" style="font-size: 25px;">{{ post.title }}</a>
+        <div class="container">
+          <div class="card bg-dark text-white my-3">
+            <div class="card-body">
+              <a
+                  class=" text-muted"
+                  href="#"
+                  onclick="location.href='{% url 'view_profile' post.author.username %}'"
+              >
+                <img
+                    alt="profile picture"
+                    class=" rounded-circle mr-2"
+                    src="{{ post.author.userprofile.image.url }}"
+                    height="30"
+                    width="30"
+                    onclick="location.href='{% url 'view_profile' post.author.username %}'"
+                />
+                {{ post.author}} i {{ post.emne}} - 
+                {{ post.submission_time}} -
+                {{ post.likes.count }} Liker
+              </a>
+              <hr class="m-1" />
+              <a href="{{ post.get_url }}" style="font-size: 25px;">{{ post.title }}</a>
+            </div>
+          </div>
         </div>
       {% endfor %}
     {% endif %}
-  </wrapper>
+    </div>
+    </div>
+  </div>
 </div>
+  
 
 {% endblock %}

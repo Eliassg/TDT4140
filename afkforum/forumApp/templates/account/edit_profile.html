@@ -13,7 +13,7 @@
         class="float-right btn btn-danger"
         onclick="location.href='{% url 'view_profile' user.username %}'"
       >
-        Back to profile (don't save)
+        Tilbake til profil (ikke lagre)
       </button>
       <form method="post" enctype="multipart/form-data">
         {% csrf_token %} 
@@ -25,6 +25,7 @@
     
         <div class="profile-big-box">
           <img
+              alt="profile pic"
             class="rounded-circle square-img"
             src="{{ user.userprofile.image.url }}"
           />
@@ -48,10 +49,9 @@
               </p>
               <hr>
             </div>
-          <button class="btn btn-success" type="submit">Submit</button>
-        </form>
-    </div>
-      </div>
+          <button class="btn btn-success" type="submit">Fullfør</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

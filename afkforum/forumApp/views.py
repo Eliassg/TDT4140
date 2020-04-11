@@ -18,6 +18,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.views.generic import RedirectView
+from django.db.models import Count
+
 
 # laster følgende inn for bildefilopplasting
 from django.core.files.storage import FileSystemStorage
@@ -31,7 +33,14 @@ from django.contrib.auth.forms import UserChangeForm
 def index(request):
     emneListe = Emne.objects.all()
     posts = Post.objects.order_by("submission_time").reverse()[:5]
-    context = {'emneListe': emneListe, 'posts':posts}
+    liked_posts = Post.objects.annotate(count=Count('likes')).order_by('count').reverse()[:5]
+    commented_posts = Post.objects.order_by("num_comments").reverse()[:5]
+    context = {
+            'emneListe': emneListe,
+            'posts':posts,
+            'liked_posts':liked_posts,
+            'commented_posts':commented_posts
+        }
     return render(request, 'index.html', context)
 
 
@@ -77,8 +86,16 @@ def logoutUser(request):
 def emneSide(request, id):
     emne = get_object_or_404(Emne, pk=id)
     emneListe = Emne.objects.all()
-    posts = get_posts_by_emne(emne)
-    context = {'emneListe': emneListe, 'emne': emne, 'posts':posts}
+    posts = get_posts_by_emne(emne).order_by("submission_time").reverse()
+    liked_posts = sorted(posts, key=lambda x: x.likes.count(), reverse = True)
+    commented_posts = sorted(posts, key=lambda x: x.num_comments, reverse = True)
+    context = {
+            'emneListe': emneListe,
+            'emne': emne,
+            'posts':posts,
+            'liked_posts':liked_posts,
+            'commented_posts':commented_posts
+        }
     return render(request, 'emner.html', context)
 
 
@@ -148,8 +165,6 @@ def delete_user(request, username):
         context['msg'] = 'The user is deleted.'       
     except User.DoesNotExist: 
         context['msg'] = 'User does not exist.'
-    except Exception as e: 
-        context['msg'] = e.message
 
     return render(request, 'register.html', context=context)
 
@@ -166,8 +181,11 @@ def show_search_result(request):
     query = request.GET.get("q")        # søkeord fra metode i template
     sokeord = str(query)
     if query:
-        queryset_list = queryset_list.filter(title__icontains=query) #filtrerer de postene som inneholder søkeord
-
+        queryset_list = sorted(
+            queryset_list.filter(title__icontains=query),
+            key=lambda x: x.likes.count(),
+            reverse = True
+        )
     context = {                         # innhold som kan hente ut i searchresult.html
         'emneListe': emneListe,
         'object_list': queryset_list,

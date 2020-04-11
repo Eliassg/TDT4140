@@ -2,9 +2,20 @@
 
 
  #dritt {
-     margin-top: 200px    !important;
-     margin: auto;  
+     margin-top: 100px !important;
+     margin-bottom: 700px !important;
+     margin-left: auto;
  }
+
+ .wrapper {
+    text-align: center;
+    margin-top: 100px;
+}
+
+.button2 {
+    position: absolute;
+    top: 50%;
+}
 
  button2 {
      font-size: calc(36px + (16 - 12) * ((100vw - 360px) / (1600 - 300))) !important
@@ -21,8 +32,9 @@
 
  .card {
      border-radius: 12px;
-     width: calc(500px + 10 * ((100vw - 320px) / 680));
-     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.8)
+     width: calc(250px + 10 * ((50vw - 160px) / 340));
+     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.8);
+     margin:auto;
  }
 
  .card-header {

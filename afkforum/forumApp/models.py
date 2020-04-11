@@ -37,13 +37,14 @@ class Post(Submission):
         ]
 
     # kode nødvendig for poster
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key = True, default = uuid.uuid4, editable = False)
     emne = models.ForeignKey(Emne, on_delete=models.CASCADE, related_name="posts")
     title = models.CharField(max_length=120)
     text = models.TextField(blank=True, max_length=8192)
     submission_time = models.DateTimeField(auto_now_add=True)
     num_comments = models.IntegerField(default=0)
     likes = models.ManyToManyField(settings.AUTH_USER_MODEL, blank = True, related_name="post_likes")
+
 
     # funksjon for å legge til kommentar på post
     def add_comment(self, text, author):
@@ -53,10 +54,10 @@ class Post(Submission):
         comment.author = author
         comment.save()
 
-        self.num_comments = F('num_comments') + 1
+        self.num_comments += 1
         self.save(update_fields=["num_comments"])
 
-        return comment
+        return comment #returnsetning
 
     # funksjoner for å få url
     def get_url(self):
@@ -65,7 +66,6 @@ class Post(Submission):
     def get_like_url(self):
         return "/forumApp/userpost/" +  str(self.id) + "/like"
 
-
     # funksjon for å få Tittelen på posten
     def as_view(self):
         title = self.title
@@ -73,7 +73,7 @@ class Post(Submission):
         return title + "\n \n" + description
 
     def __str__(self):
-        return self.title
+        return self.title + str(self.id)
 
 
 class ReportPost(Submission):
@@ -160,7 +160,7 @@ def get_image_path(instance, filename):
 class UserProfile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE) # ontoonefield handler om primary key
     description = models.CharField(max_length=140, default='', blank=True) # deskripition er noe brukeren skal kunne lagre om seg selv
-    image = models.ImageField(upload_to='profile_image', default='/profile_image/horse.jpg')
+    image = models.ImageField(upload_to='profile_image', default='/profile_image/homelogo.png')
 
     # funksjon for at brukerens UserProfile skal vises med brukernavn på admin-siden
     def __str__(self):

@@ -6,85 +6,81 @@
 <link rel="stylesheet" href="{%static 'css/register.css' %}" />
 
 <body>
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-        <div class="card card-signin flex-row my-5">
-          <div class="card-body">
-            <form method="POST" actions="">
-              {% csrf_token %}
-              <h5 class="card-title text-center">Registrer</h5>
-              <form class="form-signin">
-                <div class="form-label-group">
-                  <input
-                    type="username"
+<div class="container">
+  <div class="row">
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card card-signin flex-row my-5">
+        <div class="card-body">
+          <form method="POST">
+            {% csrf_token %}
+            <h5 class="card-title text-center">Registrer</h5>
+            <form class="form-signin">
+              <div class="form-label-group">
+                <input
+                    type="text"
                     name="username"
                     id="inputUsername"
                     class="form-control"
                     placeholder="Brukernavn"
                     required
                     autofocus
-                  />
-                  <label for="inputUsername">Brukernavn</label>
-                </div>
-
-                <div class="form-label-group">
-                  <input
-                    form.email
+                />
+                <label for="inputUsername">Brukernavn</label>
+              </div>
+              <div class="form-label-group">
+                <input
                     type="email"
                     name="email"
                     id="inputEmail"
                     class="form-control"
                     placeholder="Epost-adresse"
                     required
-                  />
-                  <label for="inputEmail">Epost-adresse</label>
-                </div>
-
-                <hr />
-                <div class="form-label-group">
-                  <input
+                />
+                <label for="inputEmail">Epost-adresse</label>
+              </div>
+              <hr />
+              <div class="form-label-group">
+                <input
                     type="password"
                     name="password1"
                     id="inputPassword"
                     class="form-control"
                     placeholder="Passord"
                     required
-                  />
-                  <label for="inputPassword">Passord</label>
-                </div>
-
-                <div class="form-label-group">
-                  <input
+                />
+                <label for="inputPassword">Passord</label>
+              </div>
+              <div class="form-label-group">
+                <input
                     type="password"
                     name="password2"
                     id="inputPassword2"
                     class="form-control"
                     placeholder="Gjenta passord"
                     required
-                  />
-                  <label for="inputPassword2">Gjenta passord</label>
-                </div>
-                {{ form.errors}}
-                <button
+                />
+                <label for="inputPassword2">Gjenta passord</label>
+              </div>
+              {{ form.errors}}
+              <button
                   class="btn btn-lg btn-primary btn-block text-uppercase"
                   type="submit"
-                >
-                  Registrer
-                </button>
-                <a
+              >
+                Registrer
+              </button>
+              <a
                   class="d-block text-center mt-2 small"
                   href="#"
                   onclick="location.href='{% url 'login' %}';"
                   >Allerede registrert? Logg inn!
-                </a>
-                <hr class="my-4" />
-              </form>
+              </a>
+              <hr class="my-4" />
             </form>
-          </div>
+          </form>
         </div>
       </div>
     </div>
   </div>
+</div>
 </body>
 {% endblock %}

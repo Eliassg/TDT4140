@@ -12,29 +12,33 @@
         class="float-right btn btn-secondary ml-2"
         onclick="location.href='{% url 'change_password' %}'"
       >
-        Change password
+        Endre passord
       </button>
       <button
         class="float-right btn btn-secondary"
         onclick="location.href='{% url 'edit_profile' %}'"
       >
-        Edit profile
+        Endre profil
       </button>
       {% endif %}
 
       <div class="profile-big-box">
         {% if user.userprofile.image %}
         <img
-          class="rounded-circle square-img"
-          src="{{ user.userprofile.image.url }}"
+            alt="profile pic"
+            class="rounded-circle square-img"
+            src="{{ user.userprofile.image.url }}"
         />
         {% endif %}
         <h1>{{user}}</h1>
         <hr />
         <div class="textbox">
-          <h4>Email</h4>
+          <h4>Epost
+          <a href="mailto:{{ user.email }}"
+          </h4>
           <p>{{ user.email }}</p>
-          <h4>Description</h4>
+          </a>
+          <h4>Beskrivelse</h4>
           <p>
             {{ user.userprofile.description }}
           </p>
@@ -47,7 +51,7 @@
         class="float-right btn btn-danger"
         onclick="location.href='{% url 'deleteUser' %}'"
       >
-        Delete user
+        Slett profil
       </button>
       {% endif %} {% block delete-btn %} {% endblock %}
     </div>
